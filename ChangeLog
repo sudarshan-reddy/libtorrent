@@ -1,4 +1,5 @@
 
+	* fix pad-file scalability issue
 	* fix iOS build on recent SDK
 	* fix tracker connection bind issue for IPv6 trackers
 	* fix error handling of some merkle torrents

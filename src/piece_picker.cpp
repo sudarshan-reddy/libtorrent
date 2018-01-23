@@ -238,7 +238,15 @@ namespace libtorrent
 		for (int i = 0; i < m_blocks_per_piece; ++i)
 		{
 			info[i].num_peers = 0;
-			info[i].state = block_info::state_none;
+			if (m_pad_blocks.count(piece_block(piece, i)))
+			{
+				info[i].state = block_info::state_finished;
+				++ret.finished;
+			}
+			else
+			{
+				info[i].state = block_info::state_none;
+			}
 			info[i].peer = 0;
 #ifdef TORRENT_USE_VALGRIND
 			VALGRIND_CHECK_VALUE_IS_DEFINED(info[i].peer);
@@ -3613,6 +3621,11 @@ get_out:
 		check_piece_state();
 #endif
 
+	}
+
+	void piece_picker::mark_as_pad(piece_block block)
+	{
+		m_pad_blocks.insert(block);
 	}
 
 /*
